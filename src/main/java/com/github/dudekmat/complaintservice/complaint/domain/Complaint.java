@@ -31,12 +31,16 @@ class Complaint {
     this.lastModified = Instant.now();
   }
 
-  void update(Money amount, UserId userId) {
+  void changeAmount(Money amount, UserId userId) {
     validateStatus();
+    validateUser(userId);
+    this.amount = amount;
+  }
+
+  private void validateUser(UserId userId) {
     if (!this.userId.equals(userId)) {
       throw new ComplaintException("Cannot access complaint submitted by another user");
     }
-    this.amount = amount;
   }
 
   private void validateStatus() {
