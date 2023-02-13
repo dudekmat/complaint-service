@@ -4,37 +4,42 @@ import com.github.dudekmat.complaintservice.shared.Money;
 import java.time.Instant;
 import lombok.Getter;
 
-class Complaint {
+public class Complaint {
 
   @Getter
-  private ComplaintId id;
+  private final ComplaintId id;
   @Getter
   private ComplaintStatus complaintStatus;
   @Getter
   private Money amount;
-  private UserId userId;
-  private Instant created;
+  private final UserId userId;
+  private final Instant created;
   private Instant lastModified;
 
-  Complaint(ComplaintId id, Money amount, UserId userId) {
+  public Complaint(ComplaintId id, Money amount, UserId userId) {
     this.id = id;
     this.amount = amount;
     this.userId = userId;
     this.complaintStatus = ComplaintStatus.DRAFT;
     this.created = Instant.now();
-    this.lastModified = Instant.now();
+    setLastModified();
   }
 
-  void accept() {
+  public void accept() {
     validateStatus();
     this.complaintStatus = ComplaintStatus.ACCEPTED;
-    this.lastModified = Instant.now();
+    setLastModified();
   }
 
-  void changeAmount(Money amount, UserId userId) {
+  public void changeAmount(Money amount, UserId userId) {
     validateStatus();
     validateUser(userId);
     this.amount = amount;
+    setLastModified();
+  }
+
+  private void setLastModified() {
+    this.lastModified = Instant.now();
   }
 
   private void validateUser(UserId userId) {
