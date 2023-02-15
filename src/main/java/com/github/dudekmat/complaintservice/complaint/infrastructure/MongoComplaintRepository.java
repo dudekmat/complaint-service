@@ -4,30 +4,28 @@ import com.github.dudekmat.complaintservice.complaint.domain.Complaint;
 import com.github.dudekmat.complaintservice.complaint.domain.ComplaintId;
 import com.github.dudekmat.complaintservice.complaint.domain.ComplaintRepository;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
-public class InMemoryComplaintRepository implements ComplaintRepository {
+@Repository
+@RequiredArgsConstructor
+class MongoComplaintRepository implements ComplaintRepository {
 
-  private final Map<ComplaintId, Complaint> complaints = new ConcurrentHashMap<>();
+  private final SpringDataMongoComplaintRepository repository;
 
   @Override
   public void save(Complaint complaint) {
-    complaints.put(complaint.getId(), complaint);
+    repository.save(complaint);
   }
 
   @Override
   public Optional<Complaint> findById(ComplaintId complaintId) {
-    return complaints
-        .values()
-        .stream()
-        .filter(complaint -> complaint.getId().equals(complaintId))
-        .findAny();
+    return repository.findById(complaintId);
   }
 
   @Override
   public List<Complaint> findAll() {
-    return complaints.values().stream().toList();
+    return repository.findAll();
   }
 }

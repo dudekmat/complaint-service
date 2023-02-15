@@ -7,14 +7,19 @@ import lombok.Getter;
 public class Complaint {
 
   @Getter
-  private final ComplaintId id;
+  private ComplaintId id;
   @Getter
   private ComplaintStatus complaintStatus;
   @Getter
   private Money amount;
-  private final UserId userId;
-  private final Instant created;
+  @Getter
+  private UserId userId;
+  @Getter
+  private Instant created;
+  @Getter
   private Instant lastModified;
+
+  private Complaint() {}
 
   public Complaint(ComplaintId id, Money amount, UserId userId) {
     this.id = id;

@@ -1,6 +1,6 @@
 package com.github.dudekmat.complaintservice.complaint.domain;
 
-enum ComplaintStatus {
+public enum ComplaintStatus {
   DRAFT,
   ACCEPTED
 }
